@@ -184,7 +184,14 @@ def run_test():
         log(f"{site['name']:<22} -> {status:<9} ({detail})")
         if status in (UNKNOWN, ERROR) and "--debug" in sys.argv:
             try:
-                print("----- DÉBUT DE LA PAGE -----\n" + fetch(site["url"])[:6000] + "\n----- FIN -----")
+                page = fetch(site["url"])
+                t = re.search(r"<title[^>]*>(.*?)</title>", page, re.S | re.I)
+                body = re.sub(r"<(script|style)[^>]*>.*?</\1>", " ", page, flags=re.S | re.I)
+                body = re.sub(r"\s+", " ", html.unescape(re.sub(r"<[^>]+>", " ", body)))
+                print("----- DÉBUT DE LA PAGE -----")
+                print("Titre :", t.group(1).strip() if t else "(aucun)")
+                print("Texte :", body.strip()[:1500])
+                print("----- FIN -----")
             except Exception as e:
                 print(f"(page illisible : {e})")
     discord("✅ Test du stock watcher : les notifications Discord fonctionnent.")
