@@ -193,6 +193,11 @@ def run_test():
     for site in SITES:
         status, detail = check_site(site)
         log(f"{site['name']:<22} -> {status:<9} ({detail})")
+        if status in (UNKNOWN, ERROR) and "--debug" in sys.argv:
+            try:
+                print("----- DÉBUT DE LA PAGE -----\n" + fetch(site["url"])[:6000] + "\n----- FIN -----")
+            except Exception as e:
+                print(f"(page illisible : {e})")
     discord("✅ Test du stock watcher : les notifications Discord fonctionnent.")
     log("Message test envoyé sur Discord (si le webhook est configuré).")
 

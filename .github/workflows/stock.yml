@@ -33,7 +33,7 @@ jobs:
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
         run: |
           if [ "${{ inputs.test }}" = "true" ]; then
-            python3 stock_watcher.py --test
+            python3 stock_watcher.py --test --debug
           else
             # vérifie environ toutes les minutes pendant 4 minutes
             python3 stock_watcher.py --duration 240
