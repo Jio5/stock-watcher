@@ -1,0 +1,46 @@
+name: Stock watcher
+
+on:
+  schedule:
+    - cron: "*/5 * * * *"   # toutes les 5 minutes (GitHub peut avoir un peu de retard)
+  workflow_dispatch:         # bouton "Run workflow" pour lancer à la main
+    inputs:
+      test:
+        description: "Mode test (vérifie une fois + message test Discord)"
+        type: boolean
+        default: true
+
+concurrency:
+  group: stock-watcher
+  cancel-in-progress: false
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      # Récupère l'état du tour précédent (pour ne pas renvoyer les mêmes alertes)
+      - uses: actions/cache/restore@v4
+        with:
+          path: stock_state.json
+          key: stock-state-${{ github.run_id }}
+          restore-keys: stock-state-
+
+      - name: Vérifier le stock
+        env:
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+        run: |
+          if [ "${{ inputs.test }}" = "true" ]; then
+            python3 stock_watcher.py --test
+          else
+            # vérifie environ toutes les minutes pendant 4 minutes
+            python3 stock_watcher.py --duration 240
+          fi
+
+      - uses: actions/cache/save@v4
+        if: always()
+        with:
+          path: stock_state.json
+          key: stock-state-${{ github.run_id }}
