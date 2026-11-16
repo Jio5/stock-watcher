@@ -55,31 +55,20 @@ ALERT_AFTER_FAILURES = 10
 # Lance d'abord "--test" pour vérifier que chaque site est bien détecté.
 # ---------------------------------------------------------------------
 SITES = [
+    # Le Nintendo Store place les visiteurs automatiques en salle d'attente :
+    # le script ne peut pas lire sa page. Pour Nintendo, garde l'appli Nintendo Store.
     {
-        "name": "Nintendo Store CH",
-        "url": "https://store.nintendo.com/fr-ch/nintendo-switch-2-edition-40e-anniversaire-de-the-legend-of-zelda-P00211",
-        "out_of_stock": ["épuisé", "rupture de stock", "out of stock", "sold out", "indisponible"],
-        "in_stock": ["ajouter au panier", "add to cart", "précommander"],
+        "name": "Galaxus",
+        "url": "https://www.galaxus.ch/fr/s1/product/nintendo-switch-2-the-legend-of-zelda-edition-game-consoles-76622991",
+        "out_of_stock": ["actuellement épuisé", "actuellement en rupture", "currently out of stock", "derzeit nicht", "pas disponible"],
+        "in_stock": ["ajouter au panier", "add to cart", "in den warenkorb"],
     },
-    # Exemples à compléter avec l'URL exacte de la fiche produit :
-    # {
-    #     "name": "Galaxus",
-    #     "url": "https://www.galaxus.ch/fr/s1/product/...",
-    #     "out_of_stock": ["pas disponible", "indisponible", "date de livraison inconnue"],
-    #     "in_stock": ["ajouter au panier"],
-    # },
-    # {
-    #     "name": "Manor",
-    #     "url": "https://www.manor.ch/fr/p/...",
-    #     "out_of_stock": ["épuisé", "pas disponible en ligne"],
-    #     "in_stock": ["ajouter au panier"],
-    # },
-    # {
-    #     "name": "Interdiscount",
-    #     "url": "https://www.interdiscount.ch/fr/product/...",
-    #     "out_of_stock": ["épuisé", "pas disponible"],
-    #     "in_stock": ["dans le panier", "ajouter au panier"],
-    # },
+    {
+        "name": "Digitec",
+        "url": "https://www.digitec.ch/fr/s1/product/nintendo-switch-2-the-legend-of-zelda-edition-game-consoles-76622991",
+        "out_of_stock": ["actuellement épuisé", "actuellement en rupture", "currently out of stock", "derzeit nicht", "pas disponible"],
+        "in_stock": ["ajouter au panier", "add to cart", "in den warenkorb"],
+    },
 ]
 
 STATE_FILE = Path(__file__).with_name("stock_state.json")
